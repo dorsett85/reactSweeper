@@ -7,7 +7,9 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist')
   },
+  devtool: 'inline-source-map',
   devServer: {
+    hotOnly: true
     /* Proxy to a backend, add appropriate url and port
     proxy: {
       '**': 'http://127.0.0.1:8000/'
@@ -19,11 +21,25 @@ module.exports = {
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/
+        use: {
+          loader: "babel-loader"
+        }
+      }, 
+      {
+        test: /\.scss$/,
+        include: path.resolve(__dirname, 'frontend/src/assets/css/app.scss'),
+        use: [{
+          loader: 'style-loader'
+        }, {
+          loader: "css-loader"
+        }, {
+          loader: "sass-loader"
+        }]
       },
       {
         test: /\.scss$/,
         include: path.resolve(__dirname, 'src'),
+        exclude: path.resolve(__dirname, 'src/assets/css/app.css'),
         use: [{
           loader: 'style-loader'
         }, {
@@ -49,7 +65,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src/index.html')
+      template: path.join(__dirname, 'src/index.html'),
+      favicon: path.resolve(__dirname, 'src/assets/img/mine.png')
     }),
   ]
 };

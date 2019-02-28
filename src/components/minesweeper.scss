@@ -1,0 +1,44 @@
+.container {
+  padding: 8px;
+  display: flex;
+  justify-content: center
+}
+
+#gameHeaderDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#coveredBoard {
+  position: absolute;
+}
+
+%gameCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+}
+
+.coveredCell {
+  @extend %gameCell;
+  background-color: black;
+  cursor: pointer;
+}
+
+.removedCellCover {
+  @extend %gameCell;
+  color: blue
+}
+
+.uncoveredCell {
+  @extend %gameCell;
+}
+
+#resultDiv {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
