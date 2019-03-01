@@ -1,7 +1,11 @@
 import React from 'react';
 
+import mineImg from '../assets/img/mine.png';
 import githubImg from '../assets/img/GitHub-Mark-32px.png';
 import styles from './minesweeper.scss';
+
+// Static variables
+const mine = <img src={mineImg} id={styles.mineImg} alt='mineImg'/>;
 
 
 const Minesweeper = props => {
@@ -22,11 +26,8 @@ const Minesweeper = props => {
       {board.map((row, rIdx) => (
         <tr key={rIdx}>
           {row.map((cell, cIdx) => (
-            <td key={cIdx}>
-              <div 
-                className={cell.covered ? styles.coveredCell : styles.coveredCellRemoved}
-                onClick={() => props.handleCellClick([rIdx, cIdx])}
-              />
+            <td key={cIdx} onClick={() => props.handleCellClick([rIdx, cIdx])}>
+              <div className={cell.covered ? styles.coveredCell : styles.coveredCellRemoved}/>
             </td>
           ))}
         </tr>
@@ -41,7 +42,7 @@ const Minesweeper = props => {
           {row.map((cell, cIdx) => (
             <td key={cIdx}>
               <div className={styles.uncoveredCell}>
-                {cell.value === '0' ? ' ' : cell.value}
+                {cell.value === '0' ? ' ' : cell.value === 'X' ? mine : cell.value}
               </div>
             </td>
           ))}
@@ -55,14 +56,14 @@ const Minesweeper = props => {
       <div>
         <div id={styles.gameHeaderDiv}>
           <h1>ReactSweeper</h1>
+          <h4>Modern Minesweeper</h4>
           <div>
-            <select value={props.difficulty} onChange={props.handleSelectDifficulty}>
+            <select value={props.difficulty} onChange={props.handleGameReset}>
               <option value='e'>Easy</option>
               <option value='m'>Medium</option>
               <option value='h'>Hard</option>
             </select>
-            <button onClick={props.handleResetBoardClick}>Reset Game</button>
-            <span>{props.time}</span>
+            <button onClick={() => props.handleGameReset()}>Reset Game</button>
           </div>
         </div>
         <div id={styles.boardDiv}>
@@ -77,15 +78,20 @@ const Minesweeper = props => {
         )}
         {props.result && (
           <div id={styles.resultDiv}>
-            <span>{props.result}</span>
+            <span>{props.result} Score: {props.score}</span>
           </div>
         )}
         <hr/>
         <div id={styles.creditsDiv}>
+          <span id={styles.cpdCredit}>
+            &#x1F5A4;&nbsp; 
+            <a href='https://cphillipsdorsett.com' target='_blank' rel='noopener noreferrer'>
+               Clayton Phillips-Dorsett
+            </a>
+          </span>
           <a href='https://github.com/dorsett85/reactSweeper' target='_blank' rel='noopener noreferrer'>
             <img src={githubImg} alt='Github Image' />
           </a>
-          <span>By Clayton Phillips-Dorsett</span>
         </div>
       </div>
     </div>
