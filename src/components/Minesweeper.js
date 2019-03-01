@@ -85,6 +85,7 @@ const Minesweeper = props => {
           <a href='https://github.com/dorsett85/reactSweeper' target='_blank' rel='noopener noreferrer'>
             <img src={githubImg} alt='Github Image' />
           </a>
+          <span>By Clayton Phillips-Dorsett</span>
         </div>
       </div>
     </div>
