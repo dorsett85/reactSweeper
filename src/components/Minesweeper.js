@@ -1,5 +1,6 @@
 import React from 'react';
 
+import githubImg from '../assets/img/GitHub-Mark-32px.png';
 import styles from './minesweeper.scss';
 
 
@@ -23,7 +24,7 @@ const Minesweeper = props => {
           {row.map((cell, cIdx) => (
             <td key={cIdx}>
               <div 
-                className={cell.covered ? styles.coveredCell : styles.removedCellCover}
+                className={cell.covered ? styles.coveredCell : styles.coveredCellRemoved}
                 onClick={() => props.handleCellClick([rIdx, cIdx])}
               />
             </td>
@@ -34,7 +35,7 @@ const Minesweeper = props => {
   );
 
   const UncoveredBoard = () => (
-    <BaseBoard>
+    <BaseBoard id={styles.uncoveredBoard}>
       {board.map((row, rIdx) => (
         <tr key={rIdx}>
           {row.map((cell, cIdx) => (
@@ -53,18 +54,37 @@ const Minesweeper = props => {
     <div className={styles.container}>
       <div>
         <div id={styles.gameHeaderDiv}>
-          <select value={props.difficulty} onChange={props.handleSelectDifficulty}>
-            <option value='e'>Easy</option>
-            <option value='m'>Medium</option>
-            <option value='h'>Hard</option>
-          </select>
-          <button onClick={props.handleResetBoardClick}>Reset Game</button>
-          <span>{props.time}</span>
+          <h1>ReactSweeper</h1>
+          <div>
+            <select value={props.difficulty} onChange={props.handleSelectDifficulty}>
+              <option value='e'>Easy</option>
+              <option value='m'>Medium</option>
+              <option value='h'>Hard</option>
+            </select>
+            <button onClick={props.handleResetBoardClick}>Reset Game</button>
+            <span>{props.time}</span>
+          </div>
         </div>
-        <CoveredBoard/>
-        <UncoveredBoard/>
-        <div id={styles.resultDiv}>
-          <span>{props.result}</span>
+        <div id={styles.boardDiv}>
+          <CoveredBoard />
+          <UncoveredBoard />
+        </div>
+        {!props.result && (
+          <div id={styles.scoreDiv}>
+            <span>Score: {props.score}</span>
+            <span>Multiplier: {props.scoreMultiplier}x</span>
+          </div>
+        )}
+        {props.result && (
+          <div id={styles.resultDiv}>
+            <span>{props.result}</span>
+          </div>
+        )}
+        <hr/>
+        <div id={styles.creditsDiv}>
+          <a href='https://github.com/dorsett85/reactSweeper' target='_blank' rel='noopener noreferrer'>
+            <img src={githubImg} alt='Github Image' />
+          </a>
         </div>
       </div>
     </div>

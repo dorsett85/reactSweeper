@@ -15,11 +15,13 @@ export default class MinesweeperContainer extends React.Component {
       uncoveredCellCount: 0,
       started: false,
       time: 0,
+      score: 0,
+      scoreMultiplier: 1,
       board: board,
       result: null
     }
 
-    // Bind functions
+    // Bind methods
     this.handleSelectDifficulty = this.handleSelectDifficulty.bind(this);
     this.handleResetBoardClick = this.handleResetBoardClick.bind(this);
     this.handleCellClick = this.handleCellClick.bind(this);
@@ -35,6 +37,8 @@ export default class MinesweeperContainer extends React.Component {
       uncoveredCellCount: 0,
       started: false,
       time: 0,
+      score: 0,
+      scoreMultiplier: 1,
       board: board,
       result: null
     })
@@ -128,7 +132,8 @@ export default class MinesweeperContainer extends React.Component {
     const updateCell = state => {
       return {
         board: state.board,
-        uncoveredCellCount: state.uncoveredCellCount + 1
+        uncoveredCellCount: state.uncoveredCellCount + 1,
+        score: state.score + 1
       }
     }
     this.setState(updateCell, () => this.checkEndGame())
@@ -141,13 +146,19 @@ export default class MinesweeperContainer extends React.Component {
     const near = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
 
     // Create function to uncover nearby cells and recursively run the function if it's a blank cell
+    let timeout = 50;
     const checkNearbyCells = (curRow, curCol) => {
-      near.map(([r, c]) => [curRow + r, curCol + c]).forEach(([r, c]) => {
-        if (board[r] && board[r][c] && board[r][c].value !== 'X' && board[r][c].covered) {
-          const cell = board[r][c];
-          this.uncoverCell(cell);
-          if (cell.value === '0') { return checkNearbyCells(r, c); }
-        }
+      near.forEach(([r, c]) => {
+        [r, c] = [curRow + r, curCol + c];
+
+        // Set timeout for nice delayed uncovering cascade effect
+        setTimeout(() => {
+          if (board[r] && board[r][c] && board[r][c].value !== 'X' && board[r][c].covered) {
+            const cell = board[r][c];
+            this.uncoverCell(cell);
+            if (cell.value === '0') { return checkNearbyCells(r, c); }
+          }
+        }, timeout === 10 ? timeout : timeout--)
       })
     }
     checkNearbyCells(r, c)
@@ -193,6 +204,8 @@ export default class MinesweeperContainer extends React.Component {
         handleSelectDifficulty={this.handleSelectDifficulty}
         handleResetBoardClick={this.handleResetBoardClick}
         handleCellClick={this.handleCellClick}
+        score={this.state.score}
+        scoreMultiplier={this.state.scoreMultiplier}
         result={this.state.result}
       />
     )
