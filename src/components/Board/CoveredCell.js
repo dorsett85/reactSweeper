@@ -8,8 +8,13 @@ export default class CoveredCell extends React.PureComponent {
   render() {
     const { covered, rIdx, cIdx, handleCellClick } = this.props;
     return (
-      <td onClick={() => handleCellClick([rIdx, cIdx])}>
-        <div className={covered ? styles.coveredCell : styles.coveredCellRemoved} />
+      <td
+        className={covered ? styles.coveredCell : styles.coveredCellRemoved}
+        onClick={() => handleCellClick([rIdx, cIdx])}
+      >
+        <div>
+          <div />
+        </div>
       </td>
     )
   }

@@ -1,27 +1,84 @@
 %gameCell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 0;
   width: 25px;
   height: 25px;
+  user-select: none;
+  div {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .coveredCell {
   @extend %gameCell;
-  background-color: black;
-  border-radius: 2px;
-  cursor: pointer;
+  div {
+    div {
+      position: relative;
+      top: 0;
+      width: inherit;
+      height: inherit;
+      background-color: black;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes removeCover {
+  to {
+    top: 25px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    border-radius: 50px;
+  }
 }
 
 .coveredCellRemoved {
-  @extend %gameCell;
-  color: blue
+  @extend .coveredCell;
+  div {
+    div {
+      animation: removeCover .5s forwards ease-in;
+    }
+  }
 }
 
 .uncoveredCell {
   @extend %gameCell;
 }
 
-#mineImg {
-  max-width: 85%;
+@mixin nearbyMineCell($bgColor) {
+  @extend .uncoveredCell;
+  div {
+    div {
+      width: 80%;
+      height: 80%; 
+      box-shadow: 0 0 5px 0.5px $bgColor;
+      border-radius: 8px;
+      color: white;
+      background-color: $bgColor;
+    }
+  }
+}
+
+.oneNearbyMineCell { @include nearbyMineCell(blue); }
+.twoNearbyMineCell { @include nearbyMineCell(green); }
+.threeNearbyMineCell { @include nearbyMineCell(red); }
+.fourNearbyMineCell { @include nearbyMineCell(darkblue); }
+.fiveNearbyMineCell { @include nearbyMineCell(brown); }
+.sixNearbyMineCell { @include nearbyMineCell(cyan); }
+.sevenNearbyMineCell { @include nearbyMineCell(black); }
+.eightNearbyMineCell { @include nearbyMineCell(grey); }
+
+.mineCell {
+  @extend .uncoveredCell;
+  div {
+    background-image: url('../../assets/img/mine.png');
+    background-position: center;
+    background-size: 85%;
+    background-repeat: no-repeat;
+  }
 }

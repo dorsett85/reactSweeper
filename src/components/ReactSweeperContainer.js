@@ -174,7 +174,7 @@ export default class MinesweeperContainer extends React.Component {
     this.subtractMultiplier = setInterval(() => {
       const sm = this.state.scoreMultiplier;
       this.setState({
-        scoreMultiplier: parseInt(sm) === 1 ? 1 : Math.floor((sm - .1) * 100) / 100
+        scoreMultiplier: sm <= 1 ? 1.00 : Math.floor((sm - (sm * .1)) * 100) / 100
       }, () => {
         if (this.state.scoreMultiplier === 1) { clearInterval(this.subtractMultiplier); }
       })
@@ -185,13 +185,13 @@ export default class MinesweeperContainer extends React.Component {
     this.setMultiplier();
 
     const cell = this.state.board[r][c];
-    this.uncoverCell(cell)
+    this.uncoverCell(cell, cell.value === 'X');
 
     // Check if the cell is a mine, otherwise uncover nearby cells  
     if (cell.value === 'X') {
       this.uncoverAllCells('lose', true);
     } else if (cell.value === '0') {
-      this.uncoverNearbyCells(r, c)
+      this.uncoverNearbyCells(r, c);
     }
 
   }

@@ -5,7 +5,7 @@ import UncoveredCell from './UncoveredCell';
 import styles from './board.scss';
 
 
-export default class UncoveredBoard extends React.Component {
+export default class UncoveredBoard extends React.PureComponent {
 
   render() {
     const { board } = this.props;

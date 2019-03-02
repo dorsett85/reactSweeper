@@ -25,7 +25,7 @@ const Minesweeper = props => {
         {!props.result && (
           <div id={styles.scoreDiv}>
             <span>Score: {props.score}</span>
-            <span>Multiplier: {props.scoreMultiplier}x</span>
+            <span>Multiplier: {props.scoreMultiplier.toFixed(2)}x</span>
           </div>
         )}
         {props.result && (
