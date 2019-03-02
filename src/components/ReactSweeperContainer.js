@@ -96,7 +96,7 @@ export default class MinesweeperContainer extends React.Component {
     if (!this.state.result) {
       this.setState({
         result: result === 'win' ? 'You win!' : 'You lose!'
-      })
+      });
     }
   }
 
@@ -109,7 +109,7 @@ export default class MinesweeperContainer extends React.Component {
   uncoverCell(cell, stopScore) {
     cell.covered = false;
     const bonus = this.activateMultiplier ? this.bonusCells + 1 : this.bonusCells;
-    const multiplier = bonus === 1 ? 1 : bonus / 2;
+    const multiplier = bonus / 2 + this.state.scoreMultiplier;
     const updateCell = state => {
       return {
         board: state.board,
@@ -165,13 +165,20 @@ export default class MinesweeperContainer extends React.Component {
     this.activateMultiplier = true;
     clearTimeout(this.multiplierTimeout);
     this.multiplierTimeout = setTimeout(() => {
+      this.activateMultiplier = false;
+      this.bonusCells = 0; 
+    }, 5000);
+
+    // Start subtracting the multiplier
+    clearInterval(this.subtractMultiplier);
+    this.subtractMultiplier = setInterval(() => {
+      const sm = this.state.scoreMultiplier;
       this.setState({
-        scoreMultiplier: 1
+        scoreMultiplier: parseInt(sm) === 1 ? 1 : Math.floor((sm - .1) * 100) / 100
       }, () => {
-        this.activateMultiplier = false;
-        this.bonusCells = 0;
+        if (this.state.scoreMultiplier === 1) { clearInterval(this.subtractMultiplier); }
       })
-    }, 5000)
+    }, 100);
   }
 
   handleCellClick([r, c]) {

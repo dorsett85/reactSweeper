@@ -1,0 +1,22 @@
+#boardDiv {
+  padding: 2px;
+  border: 1.5px solid darkgrey;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px 1px black;
+}
+
+%boardTable {
+  display: inline;
+  td {
+    padding: 0px;
+  }
+}
+
+#coveredBoard {
+  @extend %boardTable;
+  position: absolute;
+}
+
+#uncoveredBoard {
+  @extend %boardTable;
+}

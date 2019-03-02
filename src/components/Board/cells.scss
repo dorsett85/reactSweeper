@@ -1,0 +1,27 @@
+%gameCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+}
+
+.coveredCell {
+  @extend %gameCell;
+  background-color: black;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.coveredCellRemoved {
+  @extend %gameCell;
+  color: blue
+}
+
+.uncoveredCell {
+  @extend %gameCell;
+}
+
+#mineImg {
+  max-width: 85%;
+}
