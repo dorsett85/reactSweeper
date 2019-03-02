@@ -1,8 +1,10 @@
 import React from 'react';
 
+import GameHeader from './GameHeader/GameHeader';
+
 import mineImg from '../assets/img/mine.png';
 import githubImg from '../assets/img/GitHub-Mark-32px.png';
-import styles from './minesweeper.scss';
+import styles from './reactSweeper.scss';
 
 // Static variables
 const mine = <img src={mineImg} id={styles.mineImg} alt='mineImg'/>;
@@ -54,18 +56,10 @@ const Minesweeper = props => {
   return (
     <div className={styles.container}>
       <div>
-        <div id={styles.gameHeaderDiv}>
-          <h1>ReactSweeper</h1>
-          <h4>Modern Minesweeper</h4>
-          <div>
-            <select value={props.difficulty} onChange={props.handleGameReset}>
-              <option value='e'>Easy</option>
-              <option value='m'>Medium</option>
-              <option value='h'>Hard</option>
-            </select>
-            <button onClick={() => props.handleGameReset()}>Reset Game</button>
-          </div>
-        </div>
+        <GameHeader
+          difficulty={props.difficulty}
+          handleGameReset={props.handleGameReset}
+        />
         <div id={styles.boardDiv}>
           <CoveredBoard />
           <UncoveredBoard />

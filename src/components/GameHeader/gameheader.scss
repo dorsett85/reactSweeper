@@ -1,0 +1,18 @@
+
+#gameHeaderDiv {
+  margin-bottom: 10px;
+  h1, h4 {
+    text-align: center;
+  }
+  h1 {
+    margin-bottom: 0;
+  }
+  h4 {
+    margin-top: 15px;
+  }
+  div:nth-of-type(1) {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+}

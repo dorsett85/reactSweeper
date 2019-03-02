@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Minesweeper from './Minesweeper';
+import ReactSweeper from './ReactSweeper';
 
 
 export default class MinesweeperContainer extends React.Component {
@@ -191,7 +191,7 @@ export default class MinesweeperContainer extends React.Component {
 
   render() {
     return (
-      <Minesweeper
+      <ReactSweeper
         difficulty={this.state.difficulty}
         board={this.state.board}
         handleGameReset={this.handleGameReset}
