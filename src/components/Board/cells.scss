@@ -23,6 +23,12 @@
       background-color: black;
       border-radius: 2px;
       cursor: pointer;
+      &:hover {
+        background-color: rgb(66, 66, 66);
+      }
+      &:active {
+        box-shadow: 0 0 3px 0.5px rgb(100, 100, 100);
+      }
     }
   }
 }

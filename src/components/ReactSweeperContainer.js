@@ -36,8 +36,8 @@ export default class MinesweeperContainer extends React.Component {
 
   }
 
-  handleGameReset(e) {
-    this.initializeState(e ? e.target.value : this.state.difficulty, false)
+  handleGameReset(difficulty) {
+    this.initializeState(difficulty || this.state.difficulty, false);
   }
 
   makeBoard(difficulty) {
