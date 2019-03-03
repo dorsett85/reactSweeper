@@ -1,10 +1,6 @@
 import React from 'react';
 
-import mineImg from '../../assets/img/mine.png';
 import styles from './cells.scss';
-
-// Static variables
-const mine = <img src={mineImg} id={styles.mineImg} alt='mineImg' />;
 
 
 export default class CoveredCell extends React.PureComponent {
@@ -29,13 +25,11 @@ export default class CoveredCell extends React.PureComponent {
   render() {
     const { value } = this.props;
     return (
-      <td className={this.getCellBackground(value)}>
+      <div className={this.getCellBackground(value)}>
         <div>
-          <div>
-            {['0', 'X'].includes(value) ? ' ' : value}
-          </div>
+          {['0', 'X'].includes(value) ? ' ' : value}
         </div>
-      </td>
+      </div>
     )
   }
 

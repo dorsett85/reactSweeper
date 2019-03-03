@@ -5,15 +5,17 @@
   box-shadow: 2px 2px 10px 1px black;
 }
 
-%boardTable {
-  display: inline;
+%baseBoard {
+  .boardRow {
+    display: flex;
+  }
 }
 
 #coveredBoard {
-  @extend %boardTable;
+  @extend %baseBoard;
   position: absolute;
 }
 
 #uncoveredBoard {
-  @extend %boardTable;
+  @extend %baseBoard;
 }

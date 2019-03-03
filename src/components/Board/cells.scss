@@ -1,15 +1,12 @@
 %gameCell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid whitesmoke .75px;
   padding: 0;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   user-select: none;
-  div {
-    width: inherit;
-    height: inherit;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 }
 
 .coveredCell {
@@ -18,8 +15,8 @@
     div {
       position: relative;
       top: 0;
-      width: inherit;
-      height: inherit;
+      width: 30px;
+      height: 30px;
       background-color: black;
       border-radius: 2px;
       cursor: pointer;
@@ -35,7 +32,7 @@
 
 @keyframes removeCover {
   to {
-    top: 25px;
+    top: 30px;
     width: 0;
     height: 0;
     opacity: 0;
@@ -59,14 +56,15 @@
 @mixin nearbyMineCell($bgColor) {
   @extend .uncoveredCell;
   div {
-    div {
-      width: 80%;
-      height: 80%; 
-      box-shadow: 0 0 5px 0.5px $bgColor;
-      border-radius: 8px;
-      color: white;
-      background-color: $bgColor;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%; 
+    box-shadow: 0 0 5px 0.5px $bgColor;
+    border-radius: 8px;
+    color: white;
+    background-color: $bgColor;
   }
 }
 
@@ -82,6 +80,8 @@
 .mineCell {
   @extend .uncoveredCell;
   div {
+    width: inherit;
+    height: inherit;
     background-image: url('../../assets/img/mine.png');
     background-position: center;
     background-size: 85%;

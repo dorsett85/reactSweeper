@@ -10,23 +10,21 @@ export default class CoveredBoard extends React.Component {
   render() {
     const { board, handleCellClick } = this.props;
     return (
-      <table id={styles.coveredBoard}>
-        <tbody>
-          {board.map((row, rIdx) => (
-            <tr key={rIdx}>
-              {row.map(({covered}, cIdx) => (
-                <CoveredCell
-                  key={cIdx}
-                  covered={covered}
-                  rIdx={rIdx}
-                  cIdx={cIdx}
-                  handleCellClick={handleCellClick}
-                />
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div id={styles.coveredBoard}>
+        {board.map((row, rIdx) => (
+          <div key={rIdx} className={styles.boardRow}>
+            {row.map(({ covered }, cIdx) => (
+              <CoveredCell
+                key={cIdx}
+                covered={covered}
+                rIdx={rIdx}
+                cIdx={cIdx}
+                handleCellClick={handleCellClick}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     )
   }
 

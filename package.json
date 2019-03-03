@@ -1,5 +1,5 @@
 {
-  "name": "react_minesweeper",
+  "name": "ReactSweeper",
   "version": "1.0.0",
   "description": "Classic minesweeper game built with react",
   "main": "index.js",

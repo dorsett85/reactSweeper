@@ -10,20 +10,18 @@ export default class UncoveredBoard extends React.PureComponent {
   render() {
     const { board } = this.props;
     return (
-      <table id={styles.uncoveredBoard}>
-        <tbody>
-          {board.map((row, rIdx) => (
-            <tr key={rIdx}>
-              {row.map(({value}, cIdx) => (
-                <UncoveredCell
-                  key={cIdx}
-                  value={value}
-                />
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div id={styles.uncoveredBoard}>
+        {board.map((row, rIdx) => (
+          <div key={rIdx} className={styles.boardRow}>
+            {row.map(({ value }, cIdx) => (
+              <UncoveredCell
+                key={cIdx}
+                value={value}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     )
   }
 
