@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './gameHeader.scss';
+import styles from './gameheader.scss';
 
 export default class GameHeader extends React.PureComponent {
 
