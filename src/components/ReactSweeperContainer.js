@@ -157,7 +157,7 @@ export default class MinesweeperContainer extends React.Component {
 
   }
 
-  uncoverNearbyCells(r, c) {
+  uncoverCellCascade(r, c) {
     const board = this.state.board;
 
     // Create an array of surrounding cell positions
@@ -245,7 +245,7 @@ export default class MinesweeperContainer extends React.Component {
       })
     } else {
       this.setBonusCountdown();
-      if (cell.value === '0') { this.uncoverNearbyCells(r, c); }
+      if (cell.value === '0') { this.uncoverCellCascade(r, c); }
     }
 
   }
