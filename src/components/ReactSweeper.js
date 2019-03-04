@@ -4,38 +4,42 @@ import GameHeader from './GameHeader/GameHeader';
 import Board from './Board/Board';
 import CoveredBoard from './Board/CoveredBoard';
 import UncoveredBoard from './Board/UncoveredBoard';
+import GameScore from './GameScore/GameScore';
+import GameWin from './GameWin/GameWin';
 import Credits from './Credits/Credits';
 
 import styles from './reactSweeper.scss';
 
 
 const Minesweeper = props => {
+  const {
+    difficulty, handleGameReset, handleCellClick, board, score, pointBonus, 
+    time, bonusCountdown, win, lose, handleResetGameWin 
+  } = props;
 
   return (
     <div className={styles.container}>
       <div>
-        <GameHeader
-          difficulty={props.difficulty}
-          handleGameReset={props.handleGameReset}
-        />
+        <GameHeader difficulty={difficulty} handleGameReset={handleGameReset} />
         <Board>
-          <CoveredBoard board={props.board} handleCellClick={props.handleCellClick} />
-          <UncoveredBoard board={props.board} />
+          <CoveredBoard board={board} handleCellClick={handleCellClick} />
+          <UncoveredBoard board={board} lose={lose} />
         </Board>
-        {!props.result && (
-          <div id={styles.scoreDiv}>
-            <span>Score: {props.score}</span>
-            <span>Multiplier: {props.scoreMultiplier.toFixed(2)}x</span>
-          </div>
-        )}
-        {props.result && (
-          <div id={styles.resultDiv}>
-            <span>{props.result} Score: {props.score}</span>
-          </div>
-        )}
+        <GameScore 
+          score={score} 
+          pointBonus={pointBonus}
+          bonusCountdown={bonusCountdown}
+          time={time}
+        />
         <hr />
         <Credits />
       </div>
+      <GameWin 
+        score={score} 
+        time={time} 
+        win={win} 
+        handleResetGameWin={handleResetGameWin} 
+      /> 
     </div>
   )
 

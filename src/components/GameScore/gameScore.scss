@@ -1,0 +1,52 @@
+#gameScoreDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  #scoreDisplay {
+    display: flex;
+    align-items: center;
+    #scoreBadge {
+      @extend %badge;
+    }
+  }
+  #bonusDisplay {
+    display: flex;
+    flex-direction: column;
+    #bonusDiv {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+%badge {
+  margin-left: 5px;
+  padding: 5px 8px;
+  background-color: black;
+  border-radius: 10px;
+  color: white;
+}
+
+.bonusBadge {
+  @extend %badge;
+  margin-right: 5px;
+  background-color: blue;
+}
+
+$colors: blue, green, red, darkblue, brown, cyan, black, grey;
+@for $i from 1 through length($colors) {
+  .bonus#{$i}Badge {
+    @extend .bonusBadge;
+    background-color: nth($colors, $i);
+    @if nth($colors, $i) == cyan {
+      color: black;
+    }
+    @keyframes #{nth($colors, $i)} {
+      from { box-shadow: 0 0 0 0 nth($colors, $i); }
+      to { box-shadow: 0 0 20px 5px nth($colors, $i); }
+    }
+    animation: #{nth($colors, $i)} 0.25s linear;
+  }
+}

@@ -3,10 +3,14 @@ import React from 'react';
 import styles from './board.scss';
 
 
-const Board = props => (
-  <div id={styles.boardDiv}>
-    {props.children}
-  </div>
-)
+export default class Board extends React.PureComponent {
 
-export default Board;
+  render() {
+    return (
+      <div id={styles.boardDiv}>
+        {this.props.children}
+      </div>
+    )
+  }
+
+}

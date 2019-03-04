@@ -1,0 +1,48 @@
+#gameResultModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(94, 94, 94, 0.75);
+  #resultDiv {
+    position: relative;
+    transform: translate(0, -75vh);
+    width: 275px;
+    background-color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    box-shadow: 0 0 20px 2px black;
+    cursor: pointer;
+    @keyframes slideDown {
+      to { transform: translate(0, 0) }
+    }
+    animation: slideDown .25s ease-out forwards;
+    .content {
+      padding: 10px;
+      h1, h4 {
+        text-align: center;
+      }
+      #results {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        .scoreDisplay {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .badge {
+          padding: 5px 8px;
+          background-color: green;
+          border-radius: 10px;
+          color: white;
+        }
+      }
+    }
+  }
+}

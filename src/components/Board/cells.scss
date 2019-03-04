@@ -88,3 +88,14 @@
     background-repeat: no-repeat;
   }
 }
+
+.spinningMineCell {
+  @extend .mineCell;
+  border: none;
+  @keyframes grow {
+    0% { transform: scale(1, 1); }
+    50% { transform: scale(1.5, 1.5); }
+    100% { transform: scale(1, 1); }
+  }
+  animation: grow 1s ease-out infinite;
+}
