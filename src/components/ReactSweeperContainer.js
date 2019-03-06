@@ -17,7 +17,17 @@ export default class MinesweeperContainer extends React.Component {
   }
 
   initializeState(difficulty, init = true) {
+    this.surroundingCells = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
     const { board, nonMineCellCount } = this.makeBoard(difficulty);
+
+    // Set synchronous variables
+    this.uncoveredCellCount = 0;
+    this.nonMineCellCount = nonMineCellCount;
+    this.bonusCells = 0;
+    this.cascadeOn = false;
+    this.checkForWin = true;
+
+    // Set asynchronous variables
     const state = {
       difficulty: difficulty,
       score: 0,
@@ -27,13 +37,7 @@ export default class MinesweeperContainer extends React.Component {
       board: board,
       win: false,
       lose: false
-    }
-
-    // Set synchronous variables
-    this.uncoveredCellCount = 0;
-    this.nonMineCellCount = nonMineCellCount;
-    this.bonusCells = 0;
-    this.checkForWin = true;
+    };
 
     if (init) { return state; }
     this.setState(state)
@@ -41,6 +45,7 @@ export default class MinesweeperContainer extends React.Component {
   }
 
   handleGameReset(difficulty) {
+    this.cascadeOn = false;
     clearInterval(this.bonusInterval);
     this.initializeState(difficulty || this.state.difficulty, false);
   }
@@ -84,9 +89,8 @@ export default class MinesweeperContainer extends React.Component {
       if (board[r][c].value === 'X') { return board[r][c].value; }
 
       // Add up all nearby mines
-      const near = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
       const isMine = (r, c) => (board[r] && board[r][c] || 0) && (board[r][c].value === 'X');
-      return near.reduce((a, v) => a + isMine(r + v[0], c + v[1]), 0).toString();
+      return this.surroundingCells.reduce((a, v) => a + isMine(r + v[0], c + v[1]), 0).toString();
     };
     board.forEach((r, rIdx) => {
       r.forEach((c, cIdx) => {
@@ -97,28 +101,19 @@ export default class MinesweeperContainer extends React.Component {
     return { board, nonMineCellCount }
   }
 
-  checkEndGame() {
-    if (this.uncoveredCellCount >= this.nonMineCellCount) {
-      this.uncoverAllCells();
-      this.setGameWin();
-    }
-  }
-
   setGameWin() {
-    if (this.checkForWin) {
-      this.checkForWin = false;
-      const gameSeconds = (Date.now() - (this.state.time || Date.now())) / 1000;
-      const minutes = Math.floor(gameSeconds / 60);
-      const seconds = parseInt(gameSeconds - minutes * 60);
+    this.checkForWin = false;
+    const gameSeconds = (Date.now() - (this.state.time || Date.now())) / 1000;
+    const minutes = Math.floor(gameSeconds / 60);
+    const seconds = parseInt(gameSeconds - minutes * 60);
 
-      // Set a brief timeout to avoid clicking the game win modal
-      setTimeout(() => {
-        this.setState({ 
-          win: true, 
-          time: `${minutes}m ${seconds}s`
-        }, () => clearInterval(this.bonusInterval));
-      }, 500)
-    }
+    // Set a brief timeout to avoid clicking the game win modal
+    setTimeout(() => {
+      this.setState({
+        win: true,
+        time: `${minutes}m ${seconds}s`
+      }, () => { clearInterval(this.bonusInterval); });
+    }, 500);
   }
 
   resetGameWin() {
@@ -127,8 +122,8 @@ export default class MinesweeperContainer extends React.Component {
     });
   }
 
-  uncoverCell(cell, stopScore) {
-    cell.covered = false;
+  uncoverCell({ cell, r, c }, stopScore) {
+    if (cell.covered) { cell.covered = false; }
     let bonus = this.state.pointBonus;
     let score = this.state.score;
 
@@ -141,7 +136,7 @@ export default class MinesweeperContainer extends React.Component {
         this.bonusCells = 0;
       }
     }
-    const updateCell = state => {
+    const updateBoard = state => {
       return {
         board: state.board,
         score: score,
@@ -149,46 +144,54 @@ export default class MinesweeperContainer extends React.Component {
       }
     };
 
-    // Update the cell and update the synchronous variables
-    this.setState(updateCell, () => {
+    // Update the board and synchronous variables
+    this.setState(updateBoard, () => {
       this.uncoveredCellCount++;
-      if (this.checkForWin) { this.checkEndGame(); }
+      if (this.checkForWin && this.uncoveredCellCount >= this.nonMineCellCount) { 
+        this.uncoverCellCascade(r, c, 'all');
+        this.setGameWin();
+      }
     })
 
   }
 
-  uncoverCellCascade(r, c) {
+  uncoverCellCascade(r, c, cascade) {
     const board = this.state.board;
-
-    // Create an array of surrounding cell positions
-    const near = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
 
     // Create function to uncover nearby cells and recursively run the function if it's a blank cell
     let timeout = 50;
-    const checkNearbyCells = (curRow, curCol) => {
-      near.forEach(([r, c]) => {
+    const uncoverNearbyCells = (curRow, curCol, cascade) => {
+      if (!this.cascadeOn) { return; }
+
+      this.surroundingCells.forEach(([r, c]) => {
         [r, c] = [curRow + r, curCol + c];
 
-        // Set timeout for nice delayed uncovering cascade effect
-        setTimeout(() => {
-          if (board[r] && board[r][c] && board[r][c].value !== 'X' && board[r][c].covered) {
-            const cell = board[r][c];
-            this.uncoverCell(cell, cell.value === '0');
-            if (cell.value === '0') { return checkNearbyCells(r, c); }
-          }
-        }, timeout === 10 ? timeout : timeout--)
+        // Check if the cell is on the board
+        if (board[r] && board[r][c]) {
+          const cell = board[r][c];
+
+          // Set timeout for nice delayed uncovering cascade effect
+          setTimeout(() => {
+
+            if (cascade === 'all' && !cell.checked) {
+
+              cell.checked = true;
+              this.uncoverCell({ cell, r, c }, true);
+              return uncoverNearbyCells(r, c, 'all');
+
+            } else if (cell.value !== 'X' && cell.covered && cascade === 'onBlank') {
+
+              this.uncoverCell({ cell, r, c }, cell.value === '0');
+              if (cell.value === '0') { return uncoverNearbyCells(r, c, 'onBlank'); }
+
+            }
+          }, timeout === 10 ? timeout : timeout--);
+
+        }
+
       })
     };
-    checkNearbyCells(r, c);
-  }
-
-  uncoverAllCells() {
-    this.state.board.forEach(row => {
-      row.forEach(cell => {
-        if (cell.covered) { this.uncoverCell(cell, true); }
-      })
-    })
-    clearInterval(this.bonusInterval);
+    uncoverNearbyCells(r, c, cascade);
   }
 
   setBonusCountdown() {
@@ -230,22 +233,24 @@ export default class MinesweeperContainer extends React.Component {
     const time = this.state.time || Date.now();
     this.setState({ time });
     clearInterval(this.bonusInterval);
+    this.cascadeOn = true;
 
     const cell = this.state.board[r][c];
-    this.uncoverCell(cell, cell.value === 'X');
+    this.uncoverCell({ cell, r, c }, cell.value === 'X');
 
     // Check if the cell is a mine, otherwise reset bonus countdown and uncover nearby cells if it's blank  
     if (cell.value === 'X') {
       this.checkForWin = false;
-      cell.clicked = true;
+      cell.clickedMine = true;
+
+      // Need to set lose to true so the PureComponent "UncoveredBoard" will rerender with the clicked mine location 
       this.setState({
         lose: true
-      }, () => {
-        this.uncoverAllCells();
-      })
+      }, () => { this.uncoverCellCascade(r, c, 'all'); })
+
     } else {
       this.setBonusCountdown();
-      if (cell.value === '0') { this.uncoverCellCascade(r, c); }
+      if (cell.value === '0') { this.uncoverCellCascade(r, c, 'onBlank'); }
     }
 
   }
@@ -260,7 +265,7 @@ export default class MinesweeperContainer extends React.Component {
         score={this.state.score}
         pointBonus={this.state.pointBonus}
         bonusCountdown={this.state.bonusCountdown}
-        handleResetGameWin={this.resetGameWin}
+        handleGameWinModalClick={this.resetGameWin}
         win={this.state.win}
         lose={this.state.lose}
         time={this.state.time}

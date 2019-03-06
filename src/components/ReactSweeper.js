@@ -14,7 +14,7 @@ import styles from './reactSweeper.scss';
 const Minesweeper = props => {
   const {
     difficulty, handleGameReset, handleCellClick, board, score, pointBonus, 
-    time, bonusCountdown, win, lose, handleResetGameWin 
+    time, bonusCountdown, win, lose, handleGameWinModalClick 
   } = props;
 
   return (
@@ -38,7 +38,7 @@ const Minesweeper = props => {
         score={score} 
         time={time} 
         win={win} 
-        handleResetGameWin={handleResetGameWin} 
+        handleGameWinModalClick={handleGameWinModalClick} 
       /> 
     </div>
   )

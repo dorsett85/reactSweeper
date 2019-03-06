@@ -4,13 +4,13 @@ import styles from './gameWin.scss';
 
 
 const EndGame = props => {
-  const { score, time, win, handleResetGameWin } = props;
+  const { score, time, win, handleGameWinModalClick } = props;
   
   return (
     <React.Fragment>
       {win && (
         <div id={styles.gameResultModal}>
-          <div id={styles.resultDiv} onClick={handleResetGameWin}>
+          <div id={styles.resultDiv} onClick={handleGameWinModalClick}>
             <div className={styles.content}>
               <h1>You won!</h1>
               <hr/>

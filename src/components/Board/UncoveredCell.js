@@ -5,7 +5,7 @@ import styles from './cells.scss';
 
 export default class CoveredCell extends React.PureComponent {
 
-  getCellBackground(value, clicked) {
+  getCellBackground(value, clickedMine) {
     return (val => {
       switch (val) {
         case '0': return styles.uncoveredCell;
@@ -17,15 +17,15 @@ export default class CoveredCell extends React.PureComponent {
         case '6': return styles.sixNearbyMineCell;
         case '7': return styles.sevenNearbyMineCell;
         case '8': return styles.eightNearbyMineCell;
-        case 'X': return clicked ? styles.spinningMineCell : styles.mineCell;
+        case 'X': return clickedMine ? styles.spinningMineCell : styles.mineCell;
       }
     })(value)
   }
 
   render() {
-    const { value, clicked } = this.props;
+    const { value, clickedMine } = this.props;
     return (
-      <div className={this.getCellBackground(value, clicked)}>
+      <div className={this.getCellBackground(value, clickedMine)}>
         <div>
           {['0', 'X'].includes(value) ? ' ' : value}
         </div>

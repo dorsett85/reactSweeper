@@ -13,11 +13,11 @@ export default class UncoveredBoard extends React.PureComponent {
       <div id={styles.uncoveredBoard}>
         {board.map((row, rIdx) => (
           <div key={rIdx} className={styles.boardRow}>
-            {row.map(({ value, clicked }, cIdx) => (
+            {row.map(({ value, clickedMine }, cIdx) => (
               <UncoveredCell
                 key={cIdx}
                 value={value}
-                clicked={clicked}
+                clickedMine={clickedMine}
               />
             ))}
           </div>
