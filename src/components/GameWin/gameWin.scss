@@ -1,19 +1,24 @@
 #gameResultModal {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
   left: 0;
-  margin: auto;
   z-index: 1;
   background-color: rgba(94, 94, 94, 0.75);
   #resultDiv {
-    position: relative;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    position: fixed;
     transform: translate(0, -75vh);
     width: 275px;
+    height: 275px;
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
