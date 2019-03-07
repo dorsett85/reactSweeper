@@ -10,16 +10,17 @@
   z-index: 1;
   background-color: rgba(94, 94, 94, 0.75);
   #resultDiv {
-    position: relative;
-    transform: translate(0, -75vh);
+    position: fixed;
+    top: -285px;
     width: 275px;
+    height: 275px;
     background-color: white;
     border: 1px solid white;
     border-radius: 5px;
     box-shadow: 0 0 20px 2px black;
     cursor: pointer;
     @keyframes slideDown {
-      to { transform: translate(0, 0) }
+      to { top: 173px; }
     }
     animation: slideDown .25s ease-out forwards;
     .content {
