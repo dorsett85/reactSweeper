@@ -13,11 +13,10 @@ export default class CoveredBoard extends React.Component {
       <div id={styles.coveredBoard}>
         {board.map((row, rIdx) => (
           <div key={rIdx} className={styles.boardRow}>
-            {row.map(({ covered, dir }, cIdx) => (
+            {row.map(({ covered }, cIdx) => (
               <CoveredCell
                 key={cIdx}
                 covered={covered}
-                dir={dir}
                 rIdx={rIdx}
                 cIdx={cIdx}
                 handleCellClick={handleCellClick}

@@ -10,6 +10,7 @@
 }
 
 .coveredCell {
+  touch-action: manipulation;
   @extend %gameCell;
   div {
     div {
@@ -31,8 +32,9 @@
 }
 
 @keyframes removeCover {
+  from { transform: translate(0, 0); }
   to {
-    top: 30px;
+    transform: translate(0, 30px);
     width: 0;
     height: 0;
     opacity: 0;
@@ -68,14 +70,10 @@
   }
 }
 
-.oneNearbyMineCell { @include nearbyMineCell(blue); }
-.twoNearbyMineCell { @include nearbyMineCell(green); }
-.threeNearbyMineCell { @include nearbyMineCell(red); }
-.fourNearbyMineCell { @include nearbyMineCell(darkblue); }
-.fiveNearbyMineCell { @include nearbyMineCell(brown); }
-.sixNearbyMineCell { @include nearbyMineCell(cyan); }
-.sevenNearbyMineCell { @include nearbyMineCell(black); }
-.eightNearbyMineCell { @include nearbyMineCell(grey); }
+$colors: blue, green, red, darkblue, brown, cyan, black, grey;
+@for $i from 1 through length($colors) {
+  .nearbyMineCell#{$i} { @include nearbyMineCell(nth($colors, $i)); }
+}
 
 .mineCell {
   @extend .uncoveredCell;

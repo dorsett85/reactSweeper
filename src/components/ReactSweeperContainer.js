@@ -122,11 +122,8 @@ export default class MinesweeperContainer extends React.Component {
     });
   }
 
-  uncoverCell({ cell, r, c, dir }, stopScore) {
-    if (cell.covered) { 
-      cell.dir = dir;
-      cell.covered = false; 
-    }
+  uncoverCell({ cell, r, c }, stopScore) {
+    if (cell.covered) { cell.covered = false; }
     let bonus = this.state.pointBonus;
     let score = this.state.score;
 
@@ -166,17 +163,12 @@ export default class MinesweeperContainer extends React.Component {
     const uncoverNearbyCells = (curRow, curCol, cascade) => {
       if (!this.cascadeOn) { return; }
 
-      this.surroundingCells.forEach(([rA, cA]) => {
-        const [r, c] = [curRow + rA, curCol + cA];
+      this.surroundingCells.forEach(([r, c]) => {
+        [r, c] = [curRow + r, curCol + c];
 
         // Check if the cell is on the board
         if (board[r] && board[r][c]) {
           const cell = board[r][c];
-
-          // Set the direction that the cell will be uncovered
-          const yDir = rA === -1 ? 'd' : rA === 0 ? 'c' : 'u';
-          const xDir = cA === -1 ? 'r' : cA === 0 ? 'c' : 'l';
-          const dir = yDir + xDir;
 
           // Set timeout for nice delayed uncovering cascade effect
           setTimeout(() => {
@@ -184,12 +176,12 @@ export default class MinesweeperContainer extends React.Component {
             if (cascade === 'all' && !cell.checked) {
 
               cell.checked = true;
-              this.uncoverCell({ cell, r, c, dir }, true);
+              this.uncoverCell({ cell, r, c }, true);
               return uncoverNearbyCells(r, c, 'all');
 
             } else if (cell.value !== 'X' && cell.covered && cascade === 'onBlank') {
 
-              this.uncoverCell({ cell, r, c, dir }, cell.value === '0');
+              this.uncoverCell({ cell, r, c }, cell.value === '0');
               if (cell.value === '0') { return uncoverNearbyCells(r, c, 'onBlank'); }
 
             }
@@ -244,7 +236,7 @@ export default class MinesweeperContainer extends React.Component {
     this.cascadeOn = true;
 
     const cell = this.state.board[r][c];
-    this.uncoverCell({ cell, r, c, dir: 'cc' }, cell.value === 'X');
+    this.uncoverCell({ cell, r, c }, cell.value === 'X');
 
     // Check if the cell is a mine, otherwise reset bonus countdown and uncover nearby cells if it's blank  
     if (cell.value === 'X') {

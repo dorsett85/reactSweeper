@@ -5,16 +5,11 @@ import styles from './cells.scss';
 
 export default class CoveredCell extends React.PureComponent {
 
-  getRemoveCoverClass(dir) {
-    // 
-    return this.props.covered ? styles.coveredCell : styles.coveredCellRemoved;
-  }
-
   render() {
-    const { covered, dir, rIdx, cIdx, handleCellClick } = this.props;
+    const { covered, rIdx, cIdx, handleCellClick } = this.props;
     return (
       <div
-        className={this.getRemoveCoverClass(dir)}
+        className={covered ? styles.coveredCell : styles.coveredCellRemoved}
         onClick={() => handleCellClick([rIdx, cIdx])}
       >
         <div>
