@@ -11,7 +11,7 @@ import Credits from './Credits/Credits';
 import styles from './reactSweeper.scss';
 
 
-const Minesweeper = props => {
+const Minesweeper = (props) => {
   const {
     difficulty, handleGameReset, handleCellClick, board, score, pointBonus, 
     time, bonusCountdown, win, lose, handleGameWinModalClick 
@@ -25,8 +25,8 @@ const Minesweeper = props => {
           <CoveredBoard board={board} handleCellClick={handleCellClick} />
           <UncoveredBoard board={board} lose={lose} />
         </Board>
-        <GameScore 
-          score={score} 
+        <GameScore
+          score={score}
           pointBonus={pointBonus}
           bonusCountdown={bonusCountdown}
           time={time}
@@ -34,15 +34,14 @@ const Minesweeper = props => {
         <hr />
         <Credits />
       </div>
-      <GameWin 
-        score={score} 
-        time={time} 
-        win={win} 
-        handleGameWinModalClick={handleGameWinModalClick} 
-      /> 
+      <GameWin
+        score={score}
+        time={time}
+        win={win}
+        handleGameWinModalClick={handleGameWinModalClick}
+      />
     </div>
-  )
-
-}
+  );
+};
 
 export default Minesweeper;
